@@ -60,7 +60,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@4e94bd11f71e507f7f87df81788dff88d1dacbfb # v4.31.0
+        uses: github/codeql-action/upload-sarif@014f16e7ab1402f30e7c3329d33797e7948572db # v4.31.3
         with:
           sarif_file: results.sarif
           category: zizmor
@@ -90,7 +90,7 @@ jobs:
           time guarddog pypi verify test/linters-requirements.txt
           time guarddog pypi verify test/requirements.txt
       - name: Spell Check Repo ✍️
-        uses: crate-ci/typos@80c8a4945eec0f6d464eaf9e65ed98ef085283d1 # v1.38.1
+        uses: crate-ci/typos@626c4bedb751ce0b7f03262ca97ddda9a076ae1c # v1.39.2
   test:
     strategy:
       matrix:
@@ -164,7 +164,10 @@ jobs:
         if: ${{ startsWith(matrix.platform, 'ubuntu') && matrix.python-version == '3.10' }}
         run: |
           # Ensuring that those minimal versions remain compatible:
-          sed -i '/install_requires/,/\n/s/>=/==/' setup.cfg
+          sed -i '/requires-python/s/>=/~=/' pyproject.toml
+          sed -i 's/>=/==/' pyproject.toml
+          # Removing field not supported in pyproject.toml at the time (prevent this: ValueError - invalid pyproject.toml config):
+          sed -i '/license.*=/d' pyproject.toml
           pip install .
           # Targeting only a subset of tests because: A) it's faster and B) some tests are dependant on a specific version of fonttools or Pillow
           # Deselect test involving TTF fonts due to differences with old fonttools version.
@@ -179,7 +182,7 @@ jobs:
       - name: Harden Runner
         # Security hardening because this is a sensitive job,
         # where extra care should be taken NOT to leak any secret
-        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
         with:
           egress-policy: block
           allowed-endpoints:
@@ -216,7 +219,8 @@ jobs:
         run: |
           mkdir -p public/
           # Setting PDF manual version:
-          sed -i "s/author:.*/author: v$(python setup.py -V 2>/dev/null)/" mkdocs.yml
+          VERSION=$(python -c "import importlib.metadata; print(importlib.metadata.version('fpdf2'))")
+          sed -i "s/author:.*/author: v$VERSION/" mkdocs.yml
           cp tutorial/notebook.ipynb docs/
           python -m mkdocs build
           pdoc --html -o public/ fpdf --template-dir docs/pdoc
@@ -252,7 +256,7 @@ jobs:
       - name: Harden Runner
         # Security hardening because this is a sensitive job,
         # where extra care should be taken NOT to leak any secret
-        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
         with:
           egress-policy: block
           allowed-endpoints:
@@ -275,10 +279,11 @@ jobs:
         id: build
         run: |
           echo Versions already released on Pypi: $(curl -Ls 'https://pypi.org/pypi/fpdf2/json' | jq -r '.releases|keys[]')
-          pip install --upgrade setuptools twine wheel .
-          echo Current code version: $(python setup.py -V)
+          pip install --upgrade build twine .
+          VERSION=$(python -c "import importlib.metadata; print(importlib.metadata.version('fpdf2'))")
+          echo Current code version: $VERSION
           # Checking if current code version has already been released:
-          if ! curl -Ls 'https://pypi.org/pypi/fpdf2/json' | jq -r '.releases|keys[]' | grep "^$(python setup.py -V)\$"; then echo publish=yes >> "$GITHUB_OUTPUT"; python setup.py sdist bdist_wheel; twine check dist/*; fi
+          if ! curl -Ls 'https://pypi.org/pypi/fpdf2/json' | jq -r '.releases|keys[]' | grep "^$VERSION\$"; then echo publish=yes >> "$GITHUB_OUTPUT"; python -m build; twine check dist/*; fi
       - name: Publish package distributions to PyPI 🚀
         if: steps.build.outputs.publish == 'yes'
         uses: pypa/gh-action-pypi-publish@ed0c53931b1dc9bd32cbe73a98c7f6766f8a527e # v1.13.0
