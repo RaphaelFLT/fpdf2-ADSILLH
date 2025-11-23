@@ -156,7 +156,7 @@ Comme alternative, une autre option pour changer le style de police et ajouter d
 
 ## Tuto 7 - Création de documents PDF/A ##
 
-Ajouté dans [:octicons-tag-24: 2.8.3](https://github.com/py-pdf/fpdf2/blob/master/CHANGELOG.md)*
+Ajouté dans [:octicons-tag-24: 2.8.3](https://github.com/py-pdf/fpdf2/blob/master/CHANGELOG.md)
 
 ### Normes PDF/A ###
 
