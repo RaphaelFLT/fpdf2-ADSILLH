@@ -3,7 +3,6 @@ from fpdf import FPDF
 from fpdf.drawing_primitives import Transform
 from pathlib import Path
 from test.conftest import assert_pdf_equal
-import fontTools
 
 HERE = Path(__file__).resolve().parent
 
@@ -48,4 +47,4 @@ def test_transform_isolation(tmp_path):
     pdf.text(x_right, y_pos - 5, "3. After (Normal)")
     pdf.rect(x_right, y_pos, w, h)
 
-    assert_pdf_equal(pdf, HERE / "transform_isolation.pdf", tmp_path, generate=True)
+    assert_pdf_equal(pdf, HERE / "transform_isolation.pdf", tmp_path)
