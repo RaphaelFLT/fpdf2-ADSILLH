@@ -14,6 +14,7 @@ def test_transform_isolation(tmp_path):
     """
     pdf = FPDF()
     pdf.add_page()
+    pdf.set_compression(False)
     pdf.set_font("Helvetica", size=10)
 
     w, h = 30, 20
