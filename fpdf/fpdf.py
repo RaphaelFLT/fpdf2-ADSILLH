@@ -3627,8 +3627,7 @@ class FPDF(GraphicsStateMixin, TextRegionMixin):
                 -transform.f * self.k,  # Y Conversion: mm -> points + inversion
             )
 
-            command, _ = adjusted_transform.render(None)
-            # type: ignore
+            command, _ = adjusted_transform.render(None)  # type: ignore
             self._out(command)
             yield
 
