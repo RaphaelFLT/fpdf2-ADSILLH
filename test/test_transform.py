@@ -47,4 +47,4 @@ def test_transform_isolation(tmp_path):
     pdf.text(x_right, y_pos - 5, "3. After (Normal)")
     pdf.rect(x_right, y_pos, w, h)
 
-    assert_pdf_equal(pdf, HERE / "transform_isolation.pdf", tmp_path)
+    assert_pdf_equal(pdf, HERE / "transform_translation.pdf", tmp_path)
