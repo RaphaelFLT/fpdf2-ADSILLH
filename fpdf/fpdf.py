@@ -190,6 +190,7 @@ if TYPE_CHECKING:
 
 # Public global variables:
 FPDF_VERSION = "2.8.5"
+__version__ = FPDF_VERSION
 PAGE_FORMATS = {
     "a3": (841.89, 1190.55),  # 297mm × 420mm
     "a4": (595.28, 841.89),  # 210mm × 297mm
@@ -3618,14 +3619,7 @@ class FPDF(GraphicsStateMixin, TextRegionMixin):
             transform (fpdf.drawing_primitives.Transform): The transformation matrix to apply.
         """
         with self.local_context():
-            adjusted_transform = Transform(
-                transform.a,
-                transform.b,
-                transform.c,
-                transform.d,
-                transform.e * self.k,  # X Conversion: mm -> points
-                -transform.f * self.k,  # Y Conversion: mm -> points + inversion
-            )
+            adjusted_transform = transform @ Transform.scaling(x=self.k, y=-self.k)
 
             command, _ = adjusted_transform.render(None)  # type: ignore
             self._out(command)
