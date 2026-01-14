@@ -189,7 +189,7 @@ if TYPE_CHECKING:
     from .prefs import ViewerPreferences
 
 # Public global variables:
-FPDF_VERSION = "2.8.4"
+FPDF_VERSION = "2.8.5"
 PAGE_FORMATS = {
     "a3": (841.89, 1190.55),  # 297mm × 420mm
     "a4": (595.28, 841.89),  # 210mm × 297mm
