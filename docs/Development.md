@@ -93,6 +93,19 @@ In case of special "false positive" cases,
 checks can be disabled locally with `#pylint disable=XXX` code comments,
 or globally through the `.pylintrc` file.
 
+## Static typing
+Strict typing is enforced in CI with `mypy` and `pyright` (see `pyproject.toml`). Run them locally before pushing, or enable the pre-commit hook so they run automatically:
+```
+pip install fpdf2[dev]
+mypy
+pyright
+```
+
+General guidelines:
+- Use `# type: ignore[...]` sparingly
+- Prefer real types over `Any`
+- Keep casts to unavoidable spots
+
 ## Pre-commit hook
 This project uses `git` **pre-commit hooks**: https://pre-commit.com
 
@@ -113,7 +126,7 @@ pre-commit install
 
 ### Running tests
 To run tests, `cd` into `fpdf2` repository, install the dependencies using
-`pip install -r test/requirements.txt`,  and run `pytest`.
+`pip install .[dev,test]`, and run `pytest`.
 
 You may also need to install [SWIG](https://swig.org/index.html) and [Ghostscript](https://www.ghostscript.com/),
 because they are dependencies for `camelot`, a library for table extraction in PDF that we test in `test/table/test_table_extraction.py`.

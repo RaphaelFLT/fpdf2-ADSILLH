@@ -154,36 +154,38 @@ Pour créer le lien externe à l'aide d'une image, nous avons utilisé [image()]
 
 Comme alternative, une autre option pour changer le style de police et ajouter des liens est d'utiliser la méthode `write_html()`. Celle-ci permet de lire du HTML pour produire du texte, changer le style de police ou encore ajouter des liens.
 
-## Tuto 7 - Création de documents PDF/A ##
+## Tuto 7 - Création de documents PDF/A
 
-Ajouté dans [:octicons-tag-24: 2.8.3](https://github.com/py-pdf/fpdf2/blob/master/CHANGELOG.md)
+**Nouveau dans** :octicons-tag-24: **2.8.3**
 
-### Normes PDF/A ###
+### Normes PDF/A
 
-<b>PDF/A-1</b> utilise la version PDF 1.4. Toutes les ressources (images, graphiques, polices) doivent être incorporées dans le document. La gestion des couleurs doit être précise et spécifiée indépendamment de la plateforme via des profils ICC, et les métadonnées du document doivent être fournies sous forme de métadonnées XMP.
+**PDF/A-1** est basé sur la spécification PDF 1.4. Toutes les ressources (images, graphiques, polices) doivent être incorporées dans le document. La gestion des couleurs doit être spécifiée de manière indépendante de la plateforme avec des profils ICC, et les métadonnées du document doivent être fournies avec des métadonnées XMP.
 
-<b>PDF/A-2</b> utilise la version PDF 1.7. Il autorise la compression JPEG2000, les éléments transparents, les polices OpenType et les signatures numériques.
+**PDF/A-2** est basé sur la spécification PDF 1.7. Il permet la compression avec JPEG2000, les éléments transparents, les polices OpenType et les signatures numériques.
 
-La seule extension pour le <b>PDF/A-3</b> est la possibilité d'incorporer n'importe quel type de fichier.
+La seule extension pour **PDF/A-3** est la possibilité d'incorporer n'importe quel fichier possible.
 
-### Classes de conformité ###
+### Classes de conformité
 
-Le niveau A (accessible) englobe toutes les exigences de la norme, y compris la correspondance de la structure du contenu et l'ordre de lecture correct du contenu du document. Le texte doit être extractible et la structure doit refléter la séquence de lecture naturelle.
+**Niveau A (accessible)** englobe toutes les exigences de la norme, y compris la cartographie de la structure du contenu et l'ordre de lecture correct du contenu du document. Le contenu textuel doit être extractible et la structure doit refléter la séquence de lecture naturelle.
 
-Le niveau B (Basique) garantit une reproductibilité visuelle claire du contenu. Le niveau B est généralement plus facile à générer que le niveau A, mais il n'assure pas une extraction de texte ou une recherche à 100 %. La réutilisation aisée du contenu n'est pas nécessairement garantie.
+**Niveau B (basique)** garantit une reproductibilité visuelle claire du contenu. Le niveau B est généralement plus facile à générer que le niveau A, mais il ne garantit pas une extraction de texte ou une capacité de recherche à 100 %. La réutilisation sans problème du contenu n'est pas nécessairement garantie.
 
-Pour réaliser cela, voici un petit exemple :
-
+Pour y parvenir, voici un petit exemple :
 ```python
 {% include "../tutorial/tuto7.py" %}
 ```
 
-[PDF résultant : tuto7.pdf](https://github.com/py-pdf/fpdf2/raw/master/tutorial/tuto7.pdf)
+**PDF résultant :** [tuto7.pdf](https://github.com/py-pdf/fpdf2/raw/master/tutorial/tuto7.pdf)
+
 
 Des outils comme [VeraPDF](https://verapdf.org/) peuvent vérifier la conformité des documents PDF produits :
+```bash
+verapdf --format text -v tutorial/tuto7.pdf
+```
 
-    verapdf --format text -v tutorial/tuto7.pdf
-
-Produit :
-
-    PASS fpdf2/tutorial/tuto7.pdf 3b
+Produit en sortie textuelle :
+```
+PASS fpdf2/tutorial/tuto7.pdf 3b
+```
