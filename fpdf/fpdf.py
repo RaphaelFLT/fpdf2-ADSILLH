@@ -3328,12 +3328,6 @@ class FPDF(GraphicsStateMixin, TextRegionMixin):
             transform (fpdf.drawing_primitives.Transform): The transformation matrix to apply.
         """
         with self.local_context():
-            # Adapt the matrix for the PDF coordinate system:
-            # 1. Scale translations (e, f) by self.k to convert mm -> points
-            # 2. Invert the Y-axis translation (-f) because PDF Y-axis goes up, FPDF Y-axis goes down.
-            
-            # We create a new Transform instance with corrected translation values.
-            # We preserve a, b, c, d (rotation/scaling) as is.
             adjusted_transform = Transform(
                 transform.a, 
                 transform.b, 
@@ -3343,7 +3337,6 @@ class FPDF(GraphicsStateMixin, TextRegionMixin):
                 -transform.f * self.k      # Y Conversion: mm -> points + inversion
             )
             
-            # Render the CM (Current Matrix) operator
             command, _ = adjusted_transform.render(None)
             self._out(command)
             yield
