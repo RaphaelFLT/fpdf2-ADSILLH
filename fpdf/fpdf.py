@@ -3619,21 +3619,21 @@ class FPDF(GraphicsStateMixin, TextRegionMixin):
         """
         with self.local_context():
             adjusted_transform = Transform(
-                transform.a, 
-                transform.b, 
-                transform.c, 
+                transform.a,
+                transform.b,
+                transform.c,
                 transform.d,
-                transform.e * self.k,      # X Conversion: mm -> points
-                -transform.f * self.k      # Y Conversion: mm -> points + inversion
+                transform.e * self.k,  # X Conversion: mm -> points
+                -transform.f * self.k,  # Y Conversion: mm -> points + inversion
             )
-            
-            command, _ = adjusted_transform.render(None);  # type: ignore
+
+            command, _ = adjusted_transform.render(None)
+            # type: ignore
             self._out(command)
             yield
-            
+
     @check_page
     @contextmanager
-
     def local_context(self, **kwargs: Any) -> Iterator[None]:
         """
         Creates a local graphics state, which won't affect the surrounding code.
