@@ -19,7 +19,7 @@ def test_transform_isolation(tmp_path):
     w, h = 30, 20
     y_pos = 50
 
-    pdf.set_draw_color(0, 0, 0)  # Noir
+    pdf.set_draw_color(0, 0, 0)  # Black
     pdf.set_line_width(0.5)
     pdf.text(20, y_pos - 5, "1. Before (Normal)")
     pdf.rect(20, y_pos, w, h)
@@ -35,7 +35,7 @@ def test_transform_isolation(tmp_path):
         @ Transform.translation(-cx, -cy)
     )
 
-    pdf.set_draw_color(220, 50, 50)  # Rouge
+    pdf.set_draw_color(220, 50, 50)  # Red
 
     with pdf.transform(t_complex):
         pdf.text(x_center, y_pos - 5, "2. Inside (Transformed)")

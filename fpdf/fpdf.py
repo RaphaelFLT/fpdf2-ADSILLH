@@ -3606,7 +3606,7 @@ class FPDF(GraphicsStateMixin, TextRegionMixin):
 
     @check_page
     @contextmanager
-    def transform(self, transform: Transform):
+    def transform(self, transform: Transform) -> Iterator[None]:
         """
         Apply a transformation matrix to the current graphics state.
         This context manager isolates the transformation so it doesn't affect
@@ -3628,7 +3628,7 @@ class FPDF(GraphicsStateMixin, TextRegionMixin):
                 -transform.f * self.k,  # Y Conversion: mm -> points + inversion
             )
 
-            command, _ = adjusted_transform.render(None)
+            command, _ = adjusted_transform.render(None)  # type: ignore
             self._out(command)
             yield
 
