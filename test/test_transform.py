@@ -14,7 +14,6 @@ def test_transform_isolation(tmp_path):
     """
     pdf = FPDF()
     pdf.add_page()
-    pdf.set_compression(False)
     pdf.set_font("Helvetica", size=10)
 
     w, h = 30, 20
@@ -36,16 +35,15 @@ def test_transform_isolation(tmp_path):
         @ Transform.translation(-cx, -cy)
     )
 
-    pdf.set_draw_color(220, 50, 50)
+    pdf.set_draw_color(220, 50, 50)  # Rouge
 
     with pdf.transform(t_complex):
         pdf.text(x_center, y_pos - 5, "2. Inside (Transformed)")
         pdf.rect(x_center, y_pos, w, h)
-
     pdf.set_draw_color(0, 0, 0)
     x_right = 140
 
     pdf.text(x_right, y_pos - 5, "3. After (Normal)")
     pdf.rect(x_right, y_pos, w, h)
 
-    assert_pdf_equal(pdf, HERE / "transform_translation.pdf", tmp_path)
+    assert_pdf_equal(pdf, HERE / "transform.pdf", tmp_path)
