@@ -3619,14 +3619,8 @@ class FPDF(GraphicsStateMixin, TextRegionMixin):
             transform (fpdf.drawing_primitives.Transform): The transformation matrix to apply.
         """
         with self.local_context():
-            adjusted_transform = Transform(
-                transform.a,
-                transform.b,
-                transform.c,
-                transform.d,
-                transform.e * self.k,  # X Conversion: mm -> points
-                -transform.f * self.k,  # Y Conversion: mm -> points + inversion
-            )
+            user_to_pdf = Transform.scaling(self.k, -self.k).translate(0, self.h_pt)
+            adjusted_transform = user_to_pdf.inverse() @ transform @ user_to_pdf
 
             command, _ = adjusted_transform.render(None)  # type: ignore
             self._out(command)
