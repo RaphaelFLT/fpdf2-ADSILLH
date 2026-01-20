@@ -47,7 +47,6 @@ def test_transform_isolation(tmp_path):
     pdf.rect(x_right, y_pos, w, h)
 
     assert_pdf_equal(pdf, HERE / "transform.pdf", tmp_path)
-    
 
 
 def test_transform_tilted_title(tmp_path):
@@ -62,9 +61,7 @@ def test_transform_tilted_title(tmp_path):
     pdf.line(15, 30, 180, 30)
 
     title_anchor_x, title_anchor_y = 90, 30
-    title_transform = Transform.rotation_d(12).about(
-        title_anchor_x, title_anchor_y
-    )
+    title_transform = Transform.rotation_d(12).about(title_anchor_x, title_anchor_y)
     with pdf.transform(title_transform):
         pdf.set_font("Times", style="B", size=20)
         pdf.set_text_color(30, 30, 120)
@@ -108,4 +105,3 @@ def test_transform_mirrored_text(tmp_path):
     pdf.set_text_color(0, 0, 0)
 
     assert_pdf_equal(pdf, HERE / "transform_mirror.pdf", tmp_path)
-
